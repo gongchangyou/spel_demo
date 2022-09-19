@@ -64,7 +64,7 @@ class SpelDemoApplicationTests {
         context.setVariable("list", list);
 
         ExpressionParser parser = new SpelExpressionParser();
-        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10 and #this.name.contains(\"c\")]").getValue(context);
+        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10 and {\"aa\",\"bb\", \"cc\"}.contains(#this.name)]").getValue(context);
         log.info(filterList.toString());
     }
 
