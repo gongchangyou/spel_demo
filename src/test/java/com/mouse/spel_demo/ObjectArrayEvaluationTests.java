@@ -14,15 +14,7 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
-class SpelDemoApplicationTests {
-
-    @Test
-    void hello() {
-        ExpressionParser parser = new SpelExpressionParser();
-        Expression exp = parser.parseExpression("'Hello World'");
-        String message = (String) exp.getValue();
-        log.info(message);
-    }
+class ObjectArrayEvaluationTests {
 
         static List<User> list = new ArrayList<User>() {{
             add(User.builder()
@@ -40,21 +32,12 @@ class SpelDemoApplicationTests {
         }};
 
     @Test
-    void listFilter() {
-
-        ExpressionParser parser = new SpelExpressionParser();
-        List<User> filterList = (List<User>) parser.parseExpression("#{1 == 1}").getValue(list);
-        log.info(filterList.toString());
-    }
-
-
-    @Test
     void listFilterContext() {
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setVariable("list", list);
 
         ExpressionParser parser = new SpelExpressionParser();
-        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age ge 10]").getValue(context);
+        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10]").getValue(context);
         log.info(filterList.toString());
     }
 
