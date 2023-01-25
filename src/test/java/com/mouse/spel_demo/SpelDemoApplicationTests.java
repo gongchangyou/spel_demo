@@ -2,6 +2,7 @@ package com.mouse.spel_demo;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.expression.Expression;
@@ -10,7 +11,10 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @SpringBootTest
@@ -35,7 +39,7 @@ class SpelDemoApplicationTests {
                     .build());
             add(User.builder()
                     .age(20)
-                    .name("cc")
+                    .name("FR007_1Y*2Y")
                     .build());
         }};
 
@@ -49,7 +53,7 @@ class SpelDemoApplicationTests {
 
 
     @Test
-    void listFilterContext() {
+    void listFilterContext() throws InterruptedException, ExecutionException {
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setVariable("list", list);
 
@@ -64,8 +68,16 @@ class SpelDemoApplicationTests {
         context.setVariable("list", list);
 
         ExpressionParser parser = new SpelExpressionParser();
-        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10 and {\"aa\",\"bb\", \"cc\"}.contains(#this.name)]").getValue(context);
+        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10L and {\"aa\",\"bb\"|\"FR007_1Y*2Y\"}.contains(#this.name)]").getValue(context);
         log.info(filterList.toString());
+
+        for (val user : list) {
+            val p = parser.parseExpression("name matches \"a.*\"").getValue(user);
+            log.info(p.toString());
+        }
+
+        val ret = FilenameUtils.wildcardMatch("baac","*aa*");
+        log.info("ret={}",ret);
     }
 
 }
