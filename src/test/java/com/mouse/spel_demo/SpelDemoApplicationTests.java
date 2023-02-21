@@ -41,6 +41,10 @@ class SpelDemoApplicationTests {
                     .age(20)
                     .name("FR007_1Y*2Y")
                     .build());
+            add(User.builder()
+                    .age(30)
+                    .name("cc")
+                    .build());
         }};
 
     @Test
@@ -68,7 +72,7 @@ class SpelDemoApplicationTests {
         context.setVariable("list", list);
 
         ExpressionParser parser = new SpelExpressionParser();
-        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10L and {\"aa\",\"bb\"|\"FR007_1Y*2Y\"}.contains(#this.name)]").getValue(context);
+        val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10L and {\"aa\",\"bb\", \"FR007_1Y*2Y\", 'cc'}.contains(#this.name)]").getValue(context);
         log.info(filterList.toString());
 
         for (val user : list) {

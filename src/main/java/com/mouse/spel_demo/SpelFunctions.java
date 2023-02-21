@@ -13,4 +13,14 @@ public class SpelFunctions {
     public static boolean isChild(final User user) {
         return user.getAge() < 18;
     }
+
+    public static double min(final double a, final double b) {
+        return Math.min(a,b);
+    }
+
+    public static double ceil(final double a) {
+        return Math.ceil(a);
+    }
+
+
 }
