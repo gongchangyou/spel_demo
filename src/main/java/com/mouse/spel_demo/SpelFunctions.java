@@ -1,5 +1,7 @@
 package com.mouse.spel_demo;
 
+import java.util.List;
+
 /**
  * @author gongchangyou
  * @version 1.0
@@ -22,5 +24,8 @@ public class SpelFunctions {
         return Math.ceil(a);
     }
 
+    public static Integer calculateSum(final List<Integer> numbers) {
+        return numbers.stream().reduce(0, Integer::sum);
+    }
 
 }

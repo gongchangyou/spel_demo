@@ -75,13 +75,45 @@ class SpelDemoApplicationTests {
         val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10L and {\"aa\",\"bb\", \"FR007_1Y*2Y\", 'cc'}.contains(#this.name)]").getValue(context);
         log.info(filterList.toString());
 
+        val filterList1 =  parser.parseExpression("#list.![age].sum()").getValue(context);
+        log.info(filterList1.toString());
+
         for (val user : list) {
             val p = parser.parseExpression("name matches \"a.*\"").getValue(user);
             log.info(p.toString());
         }
 
+
+
         val ret = FilenameUtils.wildcardMatch("baac","*aa*");
         log.info("ret={}",ret);
     }
 
+
+    @Test
+    public void sum() throws NoSuchMethodException {
+        List<Integer> numbersList = List.of(1, 2, 3, 4, 5);
+
+        // 创建 SpEL 表达式解析器
+        SpelExpressionParser parser = new SpelExpressionParser();
+
+        // 创建 SpEL 表达式，引用 Java 代码中的方法来计算总和
+        Expression expression = parser.parseExpression("#calculateSum(#numbersList)");
+
+        // 创建评估上下文并设置方法
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        context.registerFunction("calculateSum", SpelDemoApplicationTests.class.getDeclaredMethod("calculateSum", List.class));
+
+        // 设置变量
+        context.setVariable("numbersList", numbersList);
+
+        // 通过评估上下文计算表达式的值
+        Integer result = expression.getValue(context, Integer.class);
+
+        System.out.println("Sum: " + result);
+    }
+
+    public static Integer calculateSum(List<Integer> numbers) {
+        return numbers.stream().reduce(0, Integer::sum);
+    }
 }
