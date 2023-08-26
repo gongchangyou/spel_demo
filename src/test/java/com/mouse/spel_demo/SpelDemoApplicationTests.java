@@ -90,6 +90,7 @@ class SpelDemoApplicationTests {
     }
 
 
+    //问题就是 filter在哪里做的，java method代码中，还是SpEL中
     @Test
     public void sum() throws NoSuchMethodException {
         List<Integer> numbersList = List.of(1, 2, 3, 4, 5);
