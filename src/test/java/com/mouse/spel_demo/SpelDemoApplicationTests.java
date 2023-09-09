@@ -75,8 +75,6 @@ class SpelDemoApplicationTests {
         val filterList = (List<User>) parser.parseExpression("#list.?[#this.age > 10L and {\"aa\",\"bb\", \"FR007_1Y*2Y\", 'cc'}.contains(#this.name)]").getValue(context);
         log.info(filterList.toString());
 
-        val filterList1 =  parser.parseExpression("#list.![age].sum()").getValue(context);
-        log.info(filterList1.toString());
 
         for (val user : list) {
             val p = parser.parseExpression("name matches \"a.*\"").getValue(user);

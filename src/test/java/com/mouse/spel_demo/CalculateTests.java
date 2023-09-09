@@ -41,7 +41,11 @@ class CalculateTests {
         log.info(min.toString());
 
 
-        val userA = new User(10, "mouse");
+        val userA =
+        User.builder()
+                .age(10)
+                .name("mouse")
+                .build();
         val usera = parser.parseExpression("age").getValue(context, userA);
         log.info(usera.toString());
 
@@ -82,7 +86,11 @@ class CalculateTests {
         log.info(min.toString());
 
 
-        val userA = new User(10, "mouse");
+        val userA =
+                User.builder()
+                        .age(10)
+                        .name("mouse")
+                        .build();
         val usera = parser.parseExpression("age").getValue(context, userA);
         log.info(usera.toString());
 

@@ -3,6 +3,8 @@ package com.mouse.spel_demo;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * @author gongchangyou
  * @version 1.0
@@ -13,5 +15,7 @@ import lombok.Data;
 public class User {
     private int age;
     private String name;
+
+    private Map<String,String> map;
 
 }
