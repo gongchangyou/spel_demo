@@ -10,6 +10,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,5 +42,40 @@ class SpelContainsTests {
         }
     }
 
+    @Test
+    void testEqual() {
+        // Create a SpEL expression parser
+        ExpressionParser parser = new SpelExpressionParser();
 
-}
+        // Enumerations in SpEL are accessed using their fully qualified names
+        // Replace 'com.example.MyEnum' with the actual package and enum name
+        StopWatch sw = new StopWatch();
+        for (int i=0;i<10;i++) {
+            sw.start();
+
+            val enumExpression = parser.parseExpression("'B'=='B'");
+            //下面这个会抛异常
+            //        val enumExpression = parser.parseExpression("T(com.mouse.MyEnum).valueOf('BUYxx') != null");
+
+            // Evaluate the SpEL expression
+            boolean containsValue = enumExpression.getValue(Boolean.class);
+            sw.stop();
+            System.out.println(containsValue + sw.prettyPrint());
+        }
+
+        for (int i=0;i<10;i++) {
+
+            sw.start();
+            val enumExpression1 = parser.parseExpression("{'B'}.contains('B')");
+            //下面这个会抛异常
+            //        val enumExpression = parser.parseExpression("T(com.mouse.MyEnum).valueOf('BUYxx') != null");
+
+            // Evaluate the SpEL expression
+            boolean containsValue1 = enumExpression1.getValue(Boolean.class);
+            sw.stop();
+            System.out.println("r2"+containsValue1 + sw.prettyPrint());
+        }
+    }
+
+
+    }
