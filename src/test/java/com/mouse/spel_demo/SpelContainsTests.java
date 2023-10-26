@@ -59,6 +59,16 @@ class SpelContainsTests {
 
             // Evaluate the SpEL expression
             boolean containsValue = enumExpression.getValue(Boolean.class);
+
+            val enumExpression2 = parser.parseExpression("#a<1000 or #a>2000");
+            StandardEvaluationContext context = new StandardEvaluationContext();
+            context.setVariable("a", 2500);
+            //下面这个会抛异常
+            //        val enumExpression = parser.parseExpression("T(com.mouse.MyEnum).valueOf('BUYxx') != null");
+
+            // Evaluate the SpEL expression
+            boolean containsValue2 = enumExpression2.getValue(context, Boolean.class);
+            System.out.println(containsValue2);
             sw.stop();
             System.out.println(containsValue + sw.prettyPrint());
         }

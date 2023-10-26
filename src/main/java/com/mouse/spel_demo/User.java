@@ -21,5 +21,8 @@ public class User {
 
     private List<Integer> list;
 
+    private Map<String, User> map2;
+
+
 
 }

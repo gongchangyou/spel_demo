@@ -4,11 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.expression.Expression;
-import org.springframework.expression.spel.SpelCompilerMode;
-import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +14,7 @@ import java.util.Map;
 
 @Slf4j
 @SpringBootTest
-class SpelMapTests {
+class SpelMap2Tests {
 
     static List<User> list;
     static {
@@ -30,6 +27,13 @@ class SpelMapTests {
                                 put("a", "b");
                                 put("b", "z");
                             }})
+                    .map2(new HashMap<>() {{
+                        put("x", User.builder()
+                                .age(1)
+                                .build());
+                        put("y",User.builder()
+                                .build());
+                    }})
                     .build());
         }
     }
@@ -44,7 +48,7 @@ class SpelMapTests {
 
         // 创建评估上下文并设置方法
         StandardEvaluationContext context = new StandardEvaluationContext();
-        context.registerFunction("calculateSum", SpelMapTests.class.getDeclaredMethod("calculateSum", List.class));
+        context.registerFunction("calculateSum", SpelMap2Tests.class.getDeclaredMethod("calculateSum", List.class));
 
         // 设置变量
         context.setVariable("userList", list);
@@ -66,7 +70,7 @@ class SpelMapTests {
 
         // 创建评估上下文并设置方法
         StandardEvaluationContext context = new StandardEvaluationContext();
-        context.registerFunction("calculateSum", SpelMapTests.class.getDeclaredMethod("calculateSum", List.class));
+        context.registerFunction("calculateSum", SpelMap2Tests.class.getDeclaredMethod("calculateSum", List.class));
 
         // 设置变量
         context.setVariable("userList", list);
@@ -88,7 +92,7 @@ class SpelMapTests {
 
         // 创建评估上下文并设置方法
         StandardEvaluationContext context = new StandardEvaluationContext();
-        context.registerFunction("calculateSum", SpelMapTests.class.getDeclaredMethod("calculateSum", List.class));
+        context.registerFunction("calculateSum", SpelMap2Tests.class.getDeclaredMethod("calculateSum", List.class));
 
         // 设置变量
         context.setVariable("userList", list);
@@ -105,14 +109,15 @@ class SpelMapTests {
         SpelExpressionParser parser = new SpelExpressionParser();
 
         // 创建 SpEL 表达式，引用 Java 代码中的方法来计算总和
-        Expression expression = parser.parseExpression("#userList.![map].![{#this[\"a\"],#this[\"b\"]}]");
+        Expression expression = parser.parseExpression("#userList.![map2].![{#this[\"x\"][\"age\"],#this[\"y\"][\"age\"],#this.get('x')?.get('age')}]");
 
         // 创建评估上下文并设置方法
         StandardEvaluationContext context = new StandardEvaluationContext();
-        context.registerFunction("calculateSum", SpelMapTests.class.getDeclaredMethod("calculateSum", List.class));
+        context.registerFunction("calculateSum", SpelMap2Tests.class.getDeclaredMethod("calculateSum", List.class));
 
         // 设置变量
         context.setVariable("userList", list);
+
 
         // 通过评估上下文计算表达式的值
         List result = expression.getValue(context, List.class);

@@ -35,6 +35,27 @@ class SpelListTests {
                     .build());
         }
     }
+
+    @Test
+    public void filter() throws NoSuchMethodException {
+        // 创建 SpEL 表达式解析器
+        SpelExpressionParser parser = new SpelExpressionParser();
+
+        // 创建 SpEL 表达式，引用 Java 代码中的方法来计算总和
+        Expression expression = parser.parseExpression("#userList.?[{'mouse3', 'mouse2'}.contains(name)]");
+
+        // 创建评估上下文并设置方法
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        context.registerFunction("calculateSum", SpelListTests.class.getDeclaredMethod("calculateSum", List.class));
+
+        // 设置变量
+        context.setVariable("userList", list);
+
+        // 通过评估上下文计算表达式的值
+        List result = expression.getValue(context, List.class);
+
+        System.out.println("Sum: " + result);
+    }
     @Test
     public void getOne() throws NoSuchMethodException {
 
@@ -107,7 +128,7 @@ class SpelListTests {
         SpelExpressionParser parser = new SpelExpressionParser();
 
         // 创建 SpEL 表达式，引用 Java 代码中的方法来计算总和
-        Expression expression = parser.parseExpression("#userList.![list].![{#this[0],#this[2]}]");
+        Expression expression = parser.parseExpression("#userList.![list].![{#this[\"0\"],#this['1'],#this[2]}]");
 
         // 创建评估上下文并设置方法
         StandardEvaluationContext context = new StandardEvaluationContext();
